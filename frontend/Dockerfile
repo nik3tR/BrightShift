@@ -10,7 +10,7 @@ ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
 
 COPY package*.json ./
 
-RUN --mount=type=cache,id=/root/.npm \
+RUN --mount=type=cache,target=/root/.npm \
     npm ci
 
 COPY . .
