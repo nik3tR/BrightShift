@@ -15,7 +15,6 @@ type Props = {
 export function ReframeInput({
   text,
   setText,
-  inputText,
   setInputText,
   showSaveButton,
   session,

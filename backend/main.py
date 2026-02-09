@@ -2,9 +2,18 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from google import genai
 from google.genai import types
-import os
-
 from fastapi.middleware.cors import CORSMiddleware
+from supabase import create_client, Client
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Reads .env file
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+print(SUPABASE_URL)
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+
 
 app = FastAPI()
 
@@ -21,12 +30,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Use .env file or environment variable
-API_KEY = os.getenv("GEMINI_API_KEY","AIzaSyAKLBtQrIo4wL5Hn1XMx5rC7_e-E6EVjo8")
-if not API_KEY:
-    raise Exception("Missing GEMINI_API_KEY")
-
-client = genai.Client(api_key=API_KEY)
+client = genai.Client()
 
 class Thought(BaseModel):
     text: str
@@ -46,3 +50,28 @@ def reframe_thought(thought: Thought):
         return {"reframe": response.text.strip()}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/history/{user_id}")
+def get_history(user_id: str):
+    res = supabase.table("reframes").select("id, original, reframe").eq("user_id", user_id).order("created_at", desc=True).execute()
+    return res.data
+
+
+class SaveReframe(BaseModel):
+    user_id: str | None = None
+    original: str
+    reframed: str
+
+@app.post("/save_reframe")
+def save_reframe(entry: SaveReframe):
+    res = supabase.table("reframes").insert({
+        "user_id": entry.user_id,
+        "original": entry.original,
+        "reframe": entry.reframed
+    }).execute()
+    return {"status": "saved", "data": res.data}
+
+@app.delete("/delete_reframe/{id}")
+def delete_reframe(id: str):
+    supabase.table("reframes").delete().eq("id", id).execute()
+    return {"status": "deleted"}

@@ -6,6 +6,7 @@ import { useThinkingDots } from "./hooks/useThinkingDots";
 import { Header } from "./components/Header";
 import { ReframeInput } from "./components/ReframeInput";
 import { ReframeGrid } from "./components/ReframeGrid";
+import { Background } from "./components/Background"
 
 export default function App() {
   const { session, signInWithGoogle, signOut } = useAuth();
@@ -42,6 +43,7 @@ export default function App() {
     if (!session?.user) return;
     // Save current input and generated text
     saveReframe(inputText, text);
+    eraseQuick();
   };
 
   const handleNew = () => {
@@ -52,6 +54,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-100">
+      <Background />
       <Header session={session} onSignIn={signInWithGoogle} onSignOut={signOut} />
       <main className="flex flex-col items-center flex-1 w-full px-4 sm:px-6 pt-16 pb-20 space-y-10">
         <ReframeInput
