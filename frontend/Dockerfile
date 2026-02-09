@@ -10,13 +10,10 @@ ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
 
 COPY package*.json ./
 
-RUN --mount=type=cache,target=/root/.npm \
+RUN --mount=type=cache,id=/root/.npm \
     npm ci
 
 COPY . .
-
-RUN echo "URL is: $VITE_SUPABASE_ANON_KEY"
-RUN echo "URL is: $VITE_SUPABASE_URL"
 
 RUN npm run build
 
