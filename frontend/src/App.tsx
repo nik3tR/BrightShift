@@ -6,7 +6,8 @@ import { useThinkingDots } from "./hooks/useThinkingDots";
 import { Header } from "./components/Header";
 import { ReframeInput } from "./components/ReframeInput";
 import { ReframeGrid } from "./components/ReframeGrid";
-import { Background } from "./components/Background"
+import { Background } from "./components/Background";
+import {api_url} from "./config.ts";
 
 export default function App() {
   const { session, signInWithGoogle, signOut } = useAuth();
@@ -14,7 +15,6 @@ export default function App() {
   const { text, setText, typeText, eraseQuick, showSaveButton} = useTypingEffect();
   const [loading, setLoading] = useState(false);
   const [inputText, setInputText] = useState("");
-  const api_url = import.meta.env.VITE_API_URL;
   const thinkingText = useThinkingDots(loading, "Thinking");
   const handleSubmit = async () => {
     if (!inputText.trim() || loading) return;
