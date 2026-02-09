@@ -14,7 +14,7 @@ export default function App() {
   const { text, setText, typeText, eraseQuick, showSaveButton} = useTypingEffect();
   const [loading, setLoading] = useState(false);
   const [inputText, setInputText] = useState("");
-
+  const api_url = import.meta.env.VITE_API_URL;
   const thinkingText = useThinkingDots(loading, "Thinking");
   const handleSubmit = async () => {
     if (!inputText.trim() || loading) return;
@@ -22,7 +22,7 @@ export default function App() {
 
     eraseQuick(async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/reframe", {
+        const res = await fetch(`${api_url}/reframe`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: inputText }),
