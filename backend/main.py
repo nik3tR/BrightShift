@@ -23,7 +23,7 @@ app.add_middleware(
         "http://127.0.0.1:5173",  # sometimes vite uses this form
         "http://localhost:3000",  # if you ever switch to CRA
         "http://127.0.0.1:3000",
-        "kind-heart-production-9bae.up.railway.app"
+        "https://kind-heart-production-9bae.up.railway.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
