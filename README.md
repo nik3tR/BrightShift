@@ -1,6 +1,6 @@
 # BrightShift: reframe negative thoughts
 
-## [Live Demo](reframe.niketrathod.com)
+## [Live Demo](https://reframe.niketrathod.com)
 
 ### - Frontend: React (Vite)
 ### - Backend: Python + FastAPI
